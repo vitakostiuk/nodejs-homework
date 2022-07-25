@@ -1,19 +1,52 @@
-// const fs = require('fs/promises')
+const { Schema, model } = require("mongoose");
+const Joi = require("joi");
 
-const listContacts = async () => {}
+// Описуємо схеми тіла запиту
+// Схема дл додавання контакту
+const addSchema = Joi.object({
+  name: Joi.string().min(3).max(30).required(),
 
-const getContactById = async (contactId) => {}
+  email: Joi.string().email({
+    minDomainSegments: 2,
+    tlds: { allow: ["com", "net"] },
+  }),
 
-const removeContact = async (contactId) => {}
+  phone: Joi.string().required(),
+  favorite: Joi.boolean(),
+});
 
-const addContact = async (body) => {}
+// Схема для оновлення favorite
+const updateFavoriteSchema = Joi.object({
+  favorite: Joi.boolean().required(),
+});
 
-const updateContact = async (contactId, body) => {}
+// Описуємо схему моделі для колекції contacts
+const contactSchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: [true, "Set name for contact"],
+    },
+    email: {
+      type: String,
+      unique: true,
+    },
+    phone: {
+      type: String,
+    },
+    favorite: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  { versionKey: false, timestamps: true }
+);
 
-module.exports = {
-  listContacts,
-  getContactById,
-  removeContact,
-  addContact,
-  updateContact,
-}
+const joiShemas = {
+  add: addSchema,
+  updateFavorite: updateFavoriteSchema,
+};
+
+const Contact = model("contact", contactSchema);
+
+module.exports = { Contact, joiShemas };

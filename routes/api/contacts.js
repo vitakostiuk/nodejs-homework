@@ -1,25 +1,22 @@
-const express = require('express')
+const express = require("express");
 
-const router = express.Router()
+// import controllers
+const ctrl = require("../../controllers/contacts");
 
-router.get('/', async (req, res, next) => {
-  res.json({ message: 'template message' })
-})
+// Метод Router(); створює міні-додаток, в якому можна зберігати маршрути
+const router = express.Router();
 
-router.get('/:contactId', async (req, res, next) => {
-  res.json({ message: 'template message' })
-})
+// Описуємо маршрути і оброблювачі запиту
+router.get("/", ctrl.getAll);
 
-router.post('/', async (req, res, next) => {
-  res.json({ message: 'template message' })
-})
+router.get("/:contactId", ctrl.getById);
 
-router.delete('/:contactId', async (req, res, next) => {
-  res.json({ message: 'template message' })
-})
+router.post("/", ctrl.add);
 
-router.put('/:contactId', async (req, res, next) => {
-  res.json({ message: 'template message' })
-})
+router.delete("/:contactId", ctrl.removeById);
 
-module.exports = router
+router.put("/:contactId", ctrl.updateById);
+
+router.patch("/:contactId/favorite", ctrl.updateStatusContact);
+
+module.exports = router;
