@@ -1,5 +1,8 @@
 const express = require("express");
 
+// import middleware for authorization
+const { login } = require("../../middlewares");
+
 // import controllers
 const ctrl = require("../../controllers/contacts");
 
@@ -7,16 +10,16 @@ const ctrl = require("../../controllers/contacts");
 const router = express.Router();
 
 // Описуємо маршрути і оброблювачі запиту
-router.get("/", ctrl.getAll);
+router.get("/", login, ctrl.getAll);
 
-router.get("/:contactId", ctrl.getById);
+router.get("/:contactId", login, ctrl.getById);
 
-router.post("/", ctrl.add);
+router.post("/", login, ctrl.add);
 
-router.delete("/:contactId", ctrl.removeById);
+router.delete("/:contactId", login, ctrl.removeById);
 
-router.put("/:contactId", ctrl.updateById);
+router.put("/:contactId", login, ctrl.updateById);
 
-router.patch("/:contactId/favorite", ctrl.updateStatusContact);
+router.patch("/:contactId/favorite", login, ctrl.updateStatusContact);
 
 module.exports = router;

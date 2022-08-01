@@ -4,7 +4,7 @@ const Joi = require("joi");
 // Описуємо схеми тіла запиту
 // Схема дл додавання контакту
 const addSchema = Joi.object({
-  name: Joi.string().min(3).max(30).required(),
+  name: Joi.string().min(2).max(30).required(),
 
   email: Joi.string().email({
     minDomainSegments: 2,
@@ -37,6 +37,10 @@ const contactSchema = new Schema(
     favorite: {
       type: Boolean,
       default: false,
+    },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "user",
     },
   },
   { versionKey: false, timestamps: true }
