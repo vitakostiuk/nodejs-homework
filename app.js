@@ -4,6 +4,10 @@ const cors = require("cors");
 // connect to database
 require("dotenv").config();
 
+global.basedir = __dirname;
+
+//  імпортуємо роутери
+const usersRouter = require("./routes/api/users");
 const contactsRouter = require("./routes/api/contacts");
 
 // Створюємо веб-сервер
@@ -17,6 +21,8 @@ app.use(cors());
 app.use(express.json());
 
 // ---2--- Створюємо групу маршрутів
+// Вкауємо експресу, що всі запити, які будуть починатися з api/users і /api/contacts, треба шукати тут
+app.use("/api/users", usersRouter);
 app.use("/api/contacts", contactsRouter);
 
 // ---3--- Створюємо обробники помилок
