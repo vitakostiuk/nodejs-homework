@@ -19,6 +19,8 @@ const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
+// Якщо приходить запит за статичним файлом,шукай його в папці public. Віддає файл на фронтенд
+app.use(express.static("public"));
 
 // ---2--- Створюємо групу маршрутів
 // Вкауємо експресу, що всі запити, які будуть починатися з api/users і /api/contacts, треба шукати тут
